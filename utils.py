@@ -22,6 +22,23 @@ def displayMultiAgentGame(nnl, nnr, env_type, max_steps=10000, monitor=False):
         totalReward_r += r_r
         if done:
             break
-    ob_l, ob_r = env.reset()
     print(f"Left: Expected Fitness of {nnl.fitness} | Actual Fitness = {totalReward_l} ||| Right: Expected Fitness of {nnr.fitness} | Actual Fitness = {totalReward_r}")
+    env.close()
+
+def displaySingleAgentGame(nn, env_type, max_steps=10000, monitor=False):  
+    env = env_type()
+    if monitor:
+        env = wrap_env(env)
+    ob = env.reset()
+    totalReward = 0
+    for step in range(max_steps):
+        env.render()
+        if step % 10 == 0:
+            a = nn.getOutput(ob)
+        ob, reward, done, info = env.step(a)
+        totalReward += reward
+        if done:
+            break
+    env.reset()
+    print(f"Agent: Expected Fitness of {nn.fitness} | Actual Fitness = {totalReward}")
     env.close()
