@@ -11,9 +11,6 @@ import math
 import glob
 import io
 import base64
-from IPython.display import HTML
-
-from IPython import display as ipythondisplay
 
 import cv2
 
@@ -26,12 +23,6 @@ def show_video():
   mp4list = glob.glob('video/*.mp4')
   if len(mp4list) > 0:
     for mp4 in sorted(mp4list, key = lambda fn: float(fn.split('video')[3].split('.mp4')[0])):
-    #   video = io.open(mp4, 'r+b').read()
-    #   encoded = base64.b64encode(video)
-    #   ipythondisplay.display(HTML(data='''<video alt="test" autoplay 
-    #               loop controls style="height: 400px;">
-    #               <source src="data:video/mp4;base64,{0}" type="video/mp4" />
-    #           </video>'''.format(encoded.decode('ascii'))))
         cap = cv2.VideoCapture(mp4)
         ret, frame = cap.read()
         while(1):
@@ -55,14 +46,15 @@ def wrap_env(env):
   return env
 
 
-env = wrap_env(gym.make('BipedalWalker-v3'))
+# env = wrap_env(gym.make('BipedalWalker-v3'))
+env = wrap_env(gym.make('CartPole-v0'))
 for i in range(3):
   observation = env.reset()
 
   count = 0
   while True:
     
-      env.render()
+      # env.render()
       
       #your agent goes here
       action = env.action_space.sample() 
