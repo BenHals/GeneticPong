@@ -75,6 +75,12 @@ class Population :
 
         return child
 
+
+    
+    #************************************************
+    #********YOU CAN IGNORE THE CODE BELOW***********
+    #************************************************
+    #************************************************
     def createChildFast(self, nn1, nn2):
         """ Create a child neural network by combining two FastNeuralNets
         """

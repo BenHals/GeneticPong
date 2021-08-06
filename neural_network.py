@@ -31,6 +31,8 @@ class Neuron:
 
         return output_signal
     
+    # The following code just allows saving and loading the model
+    # Feel free to ignore!
     def to_json(self):
         data = {
             "bias": self.bias,
@@ -112,6 +114,9 @@ class SlowNeuralNet:
             layer_input = layer_output
         return layer_output
     
+
+    # The following code just allows saving and loading the model
+    # Feel free to ignore!
     def to_json(self, fn):
         nn_data = {
             "fitness": self.fitness,
@@ -149,7 +154,10 @@ class SlowNeuralNet:
 
 
 
-
+#************************************************
+#********YOU CAN IGNORE THE CODE BELOW***********
+#************************************************
+#************************************************
 class FastNeuralNet:
     """ Represents an 'artificial brain', made up of neurons
     Rather than representing neurons individually, we just keep a matrix of weights and biases.
