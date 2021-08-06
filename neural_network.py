@@ -125,24 +125,13 @@ class SlowNeuralNet:
     def from_json(self, fn):
         with open(fn, 'r') as f:
             nn_data = json.load(f)
-        
-        self.fitness = nn_data["fitness"]
-        self.nodeCount = nn_data["nodeCount"]
-        nn_layers = nn_data["neurons"]
-        self.neuron_layers = []
-        for layer in nn_layers:
-            nn_layer = []
-            for n in layer:
-                neuron = Neuron()
-                neuron.from_json_str(n)
-                nn_layer.append(neuron)
-            self.neuron_layers.append(nn_layer)
-        self.seed = nn_data["seed"]
-        self.rng = np.random.RandomState(self.seed)
+        self.from_json_data(nn_data)
 
     def from_json_str(self, json_str):
         nn_data = json.loads(json_str)
-        
+        self.from_json_data(nn_data)
+
+    def from_json_data(self, nn_data):
         self.fitness = nn_data["fitness"]
         self.nodeCount = nn_data["nodeCount"]
         nn_layers = nn_data["neurons"]
@@ -156,6 +145,8 @@ class SlowNeuralNet:
             self.neuron_layers.append(nn_layer)
         self.seed = nn_data["seed"]
         self.rng = np.random.RandomState(self.seed)
+        
+
 
 
 
@@ -220,17 +211,13 @@ class FastNeuralNet:
     def from_json(self, fn):
         with open(fn, 'r') as f:
             nn_data = json.load(fn)
-        
-        self.fitness = nn_data["fitness"]
-        self.nodeCount = nn_data["nodeCount"]
-        self.weights = nn_data["weights"]
-        self.biases = nn_data["biases"]
-        self.seed = nn_data["seed"]
-        self.rng = np.random.RandomState(self.seed)
+        self.from_json_data(nn_data)
 
     def from_json_str(self, json_str):
         nn_data = json.loads(json_str)
-        
+        self.from_json_data(nn_data)
+    
+    def from_json_data(self, nn_data):
         self.fitness = nn_data["fitness"]
         self.nodeCount = nn_data["nodeCount"]
         self.weights = nn_data["weights"]
