@@ -1,5 +1,11 @@
 # GeneticPong
 
+## Colab Instructions
+Follow along with no installation requirements in google colab!
+NOTE: Due to restrictions with viewing output in the notebook, you cannot view results live.
+Results are recorded, and played back in the notebook. This unfortunately means you cannot interact, e.g., play the game yourself.
+
+TODO - Add colab link
 
 ## Installation Instructions (WINDOWS)
 
