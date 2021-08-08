@@ -15,7 +15,7 @@ from utils import displaySingleAgentGame
 
 GAME = 'BipedalWalker-v3'
 MAX_STEPS = 1500
-MAX_GENERATIONS = 20
+MAX_GENERATIONS = 2000
 POPULATION_COUNT = 500
 MUTATION_RATE = 0.01
 nn_type = "slow"
