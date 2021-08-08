@@ -37,7 +37,7 @@ def playNN(nn):
         if step % 10 == 0:
             al = a
             ar = nn.getOutput(ob_r)
-        (ob_l, ob_r), (r_l, r_r), done, info = env.step(al, ar)
+        (ob_l, ob_r), (r_l, r_r), done, info = env.step((al, ar))
         # print(f"{ob_l} - {ob_r}")
         totalReward += r_r
         if done:

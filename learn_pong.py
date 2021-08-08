@@ -92,7 +92,7 @@ for gen in range(MAX_GENERATIONS):
                     action_l = opponent.getOutput(ob_l)
                     action_r = nn.getOutput(ob_r)
                 
-                (ob_l, ob_r), (r_l, r_r), done, info = env.step(action_l, action_r)
+                (ob_l, ob_r), (r_l, r_r), done, info = env.step((action_l, action_r))
                 totalReward_l += r_l
                 totalReward_r += r_r
                 if done:

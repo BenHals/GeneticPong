@@ -44,7 +44,7 @@ def playHuman():
         if step % 10 == 0:
             al = action_l
             ar = action_r
-        (ob_l, ob_r), (r_l, r_r), done, info = env.step(al, ar)
+        (ob_l, ob_r), (r_l, r_r), done, info = env.step((al, ar))
         # print(f"{ob_l} - {ob_r}")
         totalReward += r_r
         if done:

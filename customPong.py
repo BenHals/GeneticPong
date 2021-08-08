@@ -1,7 +1,6 @@
 import math
 import gym
 from gym import spaces
-from gym.utils import seeding
 import numpy as np
 from gym.envs.classic_control import rendering
 import pyglet
@@ -134,7 +133,7 @@ class CustomPong(gym.Env):
         self.state_l[3] = (self.ball.dx * -1 + 1) / 2
         self.state_l[4] = (self.ball.dy + 1) / 2
 
-    def step(self, action_l, action_r):
+    def step(self, action):
         """ Move the game 1 step, taking the actions from the left and right players
         """
 
@@ -143,6 +142,7 @@ class CustomPong(gym.Env):
         # [100, 200, 0] => 1
         # [200, 100, 0] => 0
         # [200, 200, 210] => 2
+        action_l, action_r = action
         a_l = np.argmax(action_l)
         a_r = np.argmax(action_r)
 
