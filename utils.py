@@ -17,7 +17,7 @@ def displayMultiAgentGame(nnl, nnr, env_type, max_steps=10000, monitor=False):
         if step % 10 == 0:
             ar = nnr.getOutput(ob_r)
             al = nnl.getOutput(ob_l)
-        (ob_l, ob_r), (r_l, r_r), done, info = env.step(al, ar)
+        (ob_l, ob_r), (r_l, r_r), done, info = env.step((al, ar))
         totalReward_l += r_l
         totalReward_r += r_r
         if done:
