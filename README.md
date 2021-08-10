@@ -23,6 +23,7 @@ TODO - Add colab link
 - `pip install pyglet==1.2.4`
 - `pip install gym[box2d]`
 - `pip install tqdm`
+- `pip install matplotlib`
 
 
 ## To run
