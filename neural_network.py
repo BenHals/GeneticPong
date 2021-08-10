@@ -45,12 +45,12 @@ class Neuron:
         self.bias = json_data["bias"]
         self.connection_weights = json_data["weights"]
 
-class SlowNeuralNet:
+class NeuralNet:
     """ Represents an 'artificial brain', made up of neurons.
     Simpler and more pythonic, but may run slower than the fast version
     making use of matrix multiplication.
     """
-    def __init__(self, nodeCount, seed=None):
+    def __init__(self, nodeCount):
         """Arguments:
             nodeCount: List[int] 
                 - A list of ints representing the sizes of each layer of the neural network.
@@ -64,12 +64,6 @@ class SlowNeuralNet:
         """
 
         self.nodeCount = nodeCount
-        if seed is None:
-            seed = np.random.randint(10000000)
-        self.seed = seed
-
-        # Set up the random number generator used to make parameters
-        self.rng = np.random.RandomState(seed)
 
         # Stores the fitness of the neural network.
         # Set externally by some evaluation function    
@@ -85,13 +79,13 @@ class SlowNeuralNet:
                 neuron = Neuron()
 
                 # Set a random bias
-                neuron.set_bias(self.rng.uniform(low=-1, high=1))
+                neuron.set_bias(np.random.uniform(low=-1, high=1))
 
                 # Make a connection to each neuron in the previous layer
                 # with a random strength
                 prev_n_neurons = self.nodeCount[i-1]
                 for prev_index in range(prev_n_neurons):
-                    connection_weight = self.rng.uniform(low=-1, high=1)
+                    connection_weight = np.random.uniform(low=-1, high=1)
                     neuron.add_connection(connection_weight)
                 neuron_layer.append(neuron)
             self.neuron_layers.append(neuron_layer)
@@ -122,7 +116,6 @@ class SlowNeuralNet:
             "fitness": self.fitness,
             "nodeCount": self.nodeCount,
             "neurons": [[n.to_json() for n in layer] for layer in self.neuron_layers],
-            "seed": self.seed,
         }
         with open(fn, 'w+') as f:
             json.dump(nn_data, f)
@@ -148,8 +141,6 @@ class SlowNeuralNet:
                 neuron.from_json_str(n)
                 nn_layer.append(neuron)
             self.neuron_layers.append(nn_layer)
-        self.seed = nn_data["seed"]
-        self.rng = np.random.RandomState(self.seed)
         
 
 
@@ -163,16 +154,14 @@ class FastNeuralNet:
     Rather than representing neurons individually, we just keep a matrix of weights and biases.
     We can quickly calculate the same output using matrix multiplication.
     """
-    def __init__(self, nodeCount, seed):     
+    def __init__(self, nodeCount):     
         self.fitness = 0.0
         self.nodeCount = nodeCount
         self.weights = []
         self.biases = []
-        self.seed = seed
-        self.rng = np.random.RandomState(seed)
         for i in range(len(nodeCount) - 1):
-            self.weights.append( self.rng.uniform(low=-1, high=1, size=(nodeCount[i], nodeCount[i+1])).tolist() )
-            self.biases.append( self.rng.uniform(low=-1, high=1, size=(nodeCount[i+1])).tolist())
+            self.weights.append( np.random.uniform(low=-1, high=1, size=(nodeCount[i], nodeCount[i+1])).tolist() )
+            self.biases.append( np.random.uniform(low=-1, high=1, size=(nodeCount[i+1])).tolist())
 
 
     def printWeightsandBiases(self):
@@ -211,7 +200,6 @@ class FastNeuralNet:
             "nodeCount": self.nodeCount,
             "weights": self.weights,
             "biases": self.biases,
-            "seed": self.seed,
         }
         with open(fn, 'w+') as f:
             json.dump(nn_data, f)
@@ -230,5 +218,3 @@ class FastNeuralNet:
         self.nodeCount = nn_data["nodeCount"]
         self.weights = nn_data["weights"]
         self.biases = nn_data["biases"]
-        self.seed = nn_data["seed"]
-        self.rng = np.random.RandomState(self.seed)

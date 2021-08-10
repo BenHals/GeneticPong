@@ -1,4 +1,4 @@
-from neural_network import Neuron, FastNeuralNet, SlowNeuralNet
+from neural_network import Neuron, FastNeuralNet, NeuralNet
 from utils import show_neuron, show_network
 
 
@@ -10,6 +10,6 @@ neuron.add_connection(1)
 
 # show_neuron(neuron, [3, 4, 2])
 
-nn = SlowNeuralNet([3, 4, 2, 4, 3])
+nn = NeuralNet([3, 4, 2, 4, 3])
 print(nn.getOutput([3, 4, 2]))
 show_network(nn, [3, 4, 2])

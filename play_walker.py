@@ -9,7 +9,7 @@ import pathlib
 
 
 from customPong import CustomPong
-from neural_network import SlowNeuralNet, FastNeuralNet
+from neural_network import NeuralNet, FastNeuralNet
 from utils import displaySingleAgentGame
 
 
