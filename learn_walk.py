@@ -10,7 +10,7 @@ import numpy as np
 import tqdm
 
 from genetic_evolution import Population
-from utils import displaySingleAgentGame, evaluate_walker
+from utils import displaySingleAgentGame, evaluate_single_agent_game
 
 
 def evaluate_walker_population(pop, n_tests=5):
@@ -31,7 +31,7 @@ def evaluate_walker_population(pop, n_tests=5):
             # lets get the record for games this AI has already played
             member_record = reward_record[pop_i]
 
-            reward = evaluate_walker(nn)
+            reward = evaluate_single_agent_game(nn)
             member_record.append(reward)
 
   
@@ -58,7 +58,7 @@ MAX_STEPS = 2500
 
 # Increase this to evolve for more generations!
 # Will give better results
-MAX_GENERATIONS = 5
+MAX_GENERATIONS = 50
 POPULATION_COUNT = 50
 MUTATION_RATE = 0.02
 COMPARISON_TESTS = 1

@@ -14,7 +14,7 @@ import tqdm
 
 from customPong import CustomPong
 from genetic_evolution import Population
-from utils import displayMultiAgentGame, versus_match
+from utils import displayMultiAgentGame, evaluate_multi_agent_game
 
 def evaluate_population(pop, n_tests=5):
 
@@ -47,7 +47,7 @@ def evaluate_population(pop, n_tests=5):
             opponent = pop.population[opponent_i]
             opponent_record = reward_record[opponent_i]
 
-            reward_member, reward_opponent = versus_match(nn, opponent)
+            reward_member, reward_opponent = evaluate_multi_agent_game(nn, opponent)
 
             member_record.append(reward_member)
             opponent_record.append(reward_opponent)
@@ -87,22 +87,24 @@ env = CustomPong()
 observation = env.reset()
 
 # Automatically parse the size of input and output for the environment
-in_dimen = env.observation_space.shape[0]
+input_dimensions = env.observation_space.shape[0]
 try:
-    out_dimen = env.action_space.shape[0]
+    output_dimensions = env.action_space.shape[0]
 except:
-    out_dimen = env.action_space.n
+    output_dimensions = env.action_space.n
 
 # We first create a population of neural networks.
 # For each generation, the neural networks play eachother, recording their performance into reward_map
 # Once we have the fitness scores for all NNs, we evolve a new generation. We randomly select some NNs to pass into
 # the next generation, with better performing NNs being more likely.
 # We then fill the rest of the generation with children, which inherit from randomly selected parents.
-pop = Population(POPULATION_COUNT, MUTATION_RATE, [in_dimen, 13, 8, 13, out_dimen])
+pop = Population(POPULATION_COUNT, MUTATION_RATE, [input_dimensions, 13, 8, 13, output_dimensions])
 bestNeuralNets = []
 
 for gen in range(MAX_GENERATIONS):
     min_pop_fitness, avg_pop_fitness, max_pop_fitness, best_player = evaluate_population(pop, n_tests=COMPARISON_TESTS)
+    # Save the current best AI
+    best_player.to_json("saved_models/learned_pong_nn.json")
     print(f"Generation: {gen} | Min: {min_pop_fitness} | Max: {max_pop_fitness} | Avg: {avg_pop_fitness}")
 
     # Create New Generation!

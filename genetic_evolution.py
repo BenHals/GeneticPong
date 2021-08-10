@@ -5,7 +5,7 @@ from neural_network import NeuralNet, FastNeuralNet
 
 
 def try_mutate_value(mutated_value, m_rate, parent1_value, parent2_value, parent1_fitness, total_fitness):
-    """ A helper function while takes a random mutated value, as well as values from two parents, and randomly selects which to return.
+    """ A helper function which takes a random mutated value, as well as values from two parents, and randomly selects which to return.
     The chance of returning each value is based on a mutation rate, as well as the fitness of each parent, i.e., the better parent is more likely
     to pass on its genes.
     """
