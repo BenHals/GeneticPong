@@ -43,7 +43,7 @@ def show_video():
     print("Could not find video")
     
 
-def record_env(env):
+def record_multi_agent_env(env):
   """ Create a recorded environment.
   Videos are saved to the ./video folder
   """
@@ -51,7 +51,7 @@ def record_env(env):
   env = Monitor(env, './video', force=True, video_callable=lambda episode_id: True)
   return env
 
-def record_env_walker(env):
+def record_single_agent_env(env):
   """ Create a recorded environment.
   Videos are saved to the ./video folder
   """
@@ -60,42 +60,19 @@ def record_env_walker(env):
   return env
 
 
-def recordPongGame(player_left, player_right, max_steps=5000):  
-    print("\n Recording Game")
-    print("---------------------")
+def displayMultiAgentGame(left_agent, right_agent, env_type=CustomPong, max_steps=5000, monitor=False):
+    """ Runs a game with 2 players competing against eachother.
+    Players receive separate observations and rewards, and pass separate actions to step.
+    Compared to the single agent game, observation, reward and action are now tuples, with the first value corresponding to the left player
+    and the second to the right player.
 
-    # Setup the game
-    env = record_env(CustomPong())
-    observation_left, observation_right = env.reset()
-
-    # We record the score, or 'reward' for each player
-    totalReward_left = 0
-    totalReward_right = 0
-
-    # The game is run in steps, where each player gets to pick their action
-    for step in range(max_steps):
-        # In this pong game, players only get to pick their action every 10 steps
-        if step % 10 == 0:
-            # The players decides their action based on their senses 'observing' the world
-            action_left = player_left.getOutput(observation_left)
-            action_right = player_right.getOutput(observation_right)
-
-        # We progress the game one step based on the selected actions of each player.
-        # The game sends back the next observation each player makes, as well as their rewards
-        (observation_left, observation_right), (reward_left, reward_right), done, info = env.step((action_left, action_right))
-        totalReward_left += reward_left
-        totalReward_right += reward_right
-        if done:
-            break
-    print(f"Game Finished! Left got a score of {totalReward_left}, Right got a score of {totalReward_right}")
-    env.close()
-
-def displayMultiAgentGame(left_agent, right_agent, env_type, max_steps=5000, monitor=False):  
+    Set monitor to True to record the game.
+    """  
     env = env_type()
     if monitor:
         print("\n Recording Game")
         print("---------------------")
-        env = record_env(env)
+        env = record_multi_agent_env(env)
 
     # Setup the game
     observation_left, observation_right = env.reset()
@@ -125,37 +102,13 @@ def displayMultiAgentGame(left_agent, right_agent, env_type, max_steps=5000, mon
     print(f"Game Finished! Left got a score of {totalReward_left}, Right got a score of {totalReward_right}")
     env.close()
 
-def recordWalker(walker, max_steps=5000):  
-    print("\n Recording Walker")
-    print("---------------------")
 
-    # Setup the game
-    # We are going to use an environemnt from OpenAI
-    # This is a single agent environment, so instead of observations, actions and rewards for each side, we only have one.
-    # This is the only difference!
+def displaySingleAgentGame(agent, env_type=lambda : gym.make('BipedalWalker-v3'), max_steps=5000, monitor=False):  
+    """ Runs a game with one player.
+    Observation, reward and action are single values.
 
-    env = record_env_walker(gym.make('BipedalWalker-v3'))
-    observation = env.reset()
-
-    # We record the score, or 'reward' for the walker
-    totalReward = 0
-    # The game is run in steps, where each player gets to pick their action
-    for step in range(max_steps):
-        # In the walker environment, the AI picks an action every step
-        # The walker decides its action based on their senses 'observing' the world
-        action = walker.getOutput(observation)
-        
-        # We progress the game one step based on the selected action of the walker.
-        # The game sends back the next observation
-        observation, reward, done, info = env.step(action)
-        totalReward += reward
-        if done:
-            break
-    print(f"Game Finished! The walker got a score of {totalReward}")
-    env.close()
-
-
-def displaySingleAgentGame(agent, env_type, max_steps=10000, monitor=False):  
+    Set monitor to True to record the game.
+    """  
     # Setup the game
     # We are going to use an environemnt from OpenAI
     # This is a single agent environment, so instead of observations, actions and rewards for each side, we only have one.
@@ -164,7 +117,7 @@ def displaySingleAgentGame(agent, env_type, max_steps=10000, monitor=False):
     if monitor:
         print("\n Recording Walker")
         print("---------------------")
-        env = record_env_walker(env)
+        env = record_single_agent_env(env)
 
     observation = env.reset()
     totalReward = 0
@@ -216,13 +169,13 @@ def evaluate_multi_agent_game(player_left, player_right, max_steps=5000):
             break
     return totalReward_left, totalReward_right
 
-def evaluate_single_agent_game(walker, max_steps=5000):  
+def evaluate_single_agent_game(agent, env_type=lambda : gym.make('BipedalWalker-v3'), max_steps=5000):  
     # Setup the game
     # We are going to use an environemnt from OpenAI
     # This is a single agent environment, so instead of observations, actions and rewards for each side, we only have one.
     # This is the only difference!
 
-    env = gym.make('BipedalWalker-v3')
+    env = env_type()
     observation = env.reset()
 
     # We record the score, or 'reward' for the walker
@@ -231,7 +184,7 @@ def evaluate_single_agent_game(walker, max_steps=5000):
     for step in range(max_steps):
         # In the walker environment, the AI picks an action every step
         # The walker decides its action based on their senses 'observing' the world
-        action = walker.getOutput(observation)
+        action = agent.getOutput(observation)
 
         # We progress the game one step based on the selected action of the walker.
         # The game sends back the next observation
