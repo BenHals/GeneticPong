@@ -24,6 +24,7 @@ TODO - Add colab link
 - `pip install gym[box2d]`
 - `pip install tqdm`
 - `pip install matplotlib`
+- `pip install pygments`
 
 
 ## To run
