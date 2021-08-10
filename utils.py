@@ -112,6 +112,7 @@ def show_neuron(neuron, test_input):
     ax.annotate("Output", (ex, ey+0.025), ha='right', va='bottom')
     ax.annotate(f"{'+'.join([f'{w}x{i}' for i, w in zip(test_input, neuron.connection_weights)])} \n + {neuron.bias} = {output_val}", (1.0, ey-0.025), ha='right', va='top')
     ax.add_patch(arrow)
+    ax.set_axis_off()
     plt.show()
 
 
@@ -158,4 +159,5 @@ def show_network(nn, test_input):
             nx, ny = draw_node(ax, p, p+node_height, layer_start_x, layer_end_x, 'c', f"{v:.0f}")
         layer_locations = next_layer_locations
     ax.invert_yaxis()
+    ax.set_axis_off()
     plt.show()
