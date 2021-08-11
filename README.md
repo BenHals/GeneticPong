@@ -21,10 +21,12 @@ TODO - Add colab link
 - `pip install Box2D`
 - `pip install gym[all]`
 - `pip install pyglet==1.2.4`
+- `conda install swig`
 - `pip install gym[box2d]`
 - `pip install tqdm`
 - `pip install matplotlib`
 - `pip install pygments`
+- `pip install Ipython`
 
 
 ## To run
